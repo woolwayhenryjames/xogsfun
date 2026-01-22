@@ -1,14 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-
-declare global {
-  var prisma: PrismaClient | undefined
-}
-
-const prisma = global.prisma || new PrismaClient()
-
-if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prisma
-}
+import prisma from '@/lib/prisma'
 
 export { prisma }
 
@@ -30,18 +20,18 @@ export async function getNextPlatformId(): Promise<number> {
         currentValue: 10000
       }
     })
-    
+
     return sequence.currentValue
   } catch (error) {
     console.error('Failed to get platformId:', error)
-    
+
     // Fallback: query max platformId from user table
     try {
       const maxUser = await prisma.user.findFirst({
         orderBy: { platformId: 'desc' },
         select: { platformId: true }
       })
-      
+
       return maxUser ? maxUser.platformId + 1 : 10000
     } catch (fallbackError) {
       console.error('Fallback also failed:', fallbackError)

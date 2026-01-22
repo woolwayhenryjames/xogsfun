@@ -10,8 +10,8 @@ const nextConfig = {
     // Use aliases for polyfills instead of externals
     config.resolve.alias = {
       ...config.resolve.alias,
-      crypto: false, // Force use of global Web Crypto by stubbing Node crypto
-      'node:crypto': false,
+      crypto: require.resolve('crypto-browserify'),
+      'node:crypto': require.resolve('crypto-browserify'),
       stream: require.resolve('stream-browserify'),
       'node:stream': require.resolve('stream-browserify'),
       http: require.resolve('stream-http'),
@@ -35,7 +35,6 @@ const nextConfig = {
       })
     );
 
-    // Also keep the safe externals if needed, or remove completely if handled by polyfills.
     // pino-pretty etc might still need to be external if they are server-only tools.
     config.externals.push("pino-pretty", "lokijs", "encoding");
 

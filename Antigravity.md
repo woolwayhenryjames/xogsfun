@@ -29,6 +29,26 @@
     - Problem: The fix above caused a Syntax Error in the build output (`module.exports = node:url;` is invalid JS).
     - Fix: Updated `next.config.js` to use `"commonjs node:..."` prefix (e.g., `"url": "commonjs node:url"`), forcing Webpack to generate valid `require` statements.
     - Result: Pushed fix to GitHub.
+10. **Fix Edge Runtime Sandbox 'Native module not found'**:
+    - Problem: Build failed with `TypeError: Native module not found: node:url` during "Collecting page data". The Next.js Edge Sandbox seemingly doesn't support `node:` prefix.
+    - Fix: Updated `next.config.js` to remove `node:` prefix (e.g., `"url": "commonjs url"`).
+    - Result: Pushed fix to GitHub.
+11. **Switch to Polyfills**:
+    - Problem: Externals approach failed (Native module not found).
+    - Fix: Installed `crypto-browserify`, `stream-browserify`, etc., and configured Webpack aliases in `next.config.js`.
+    - Result: Pushed fix to GitHub.
+12. **Robust Polyfills & ProvidePlugin**:
+    - Problem: Previous polyfill attempt incomplete; `node:` aliases missing, globals `Buffer`/`process` missing, `vm` warnings.
+    - Fix: Added `webpack.ProvidePlugin` for `Buffer`/`process`, mocked `vm`, and aliased both bare and `node:` modules.
+    - Result: Pushed fix to GitHub.
+13. **Sync Package Dependencies**:
+    - Problem: Build failed with `Cannot find module 'vm-browserify'`. I forgot to commit `package.json` and `package-lock.json` in step 12, so the remote instance didn't install the new polyfills.
+    - Fix: Committed and pushed `package.json` and `package-lock.json`.
+    - Result: Pushed fix to GitHub.
+14. **Fix Runtime Crash in openid-client (Crypto)**:
+    - Problem: Build compiled but crashed during "Collecting page data" with an error in `openid-client`. This suggests `crypto-browserify` (Node crypto polyfill) is incomplete/broken for `jose`'s requirements in Edge Runtime.
+    - Fix: Updated `next.config.js` to alias `crypto` and `node:crypto` to `false` (stub). This forces `openid-client`/`jose` to fallback to the native Web Crypto API (`crypto.subtle`) which is fully supported in Edge Runtime.
+    - Result: Pushed fix to GitHub.
 
 ### Status
 - Awaiting Cloudflare Pages build verification.

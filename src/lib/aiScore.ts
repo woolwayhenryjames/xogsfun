@@ -27,7 +27,7 @@ interface UserData {
   twitterCreatedAt: Date | null;
 }
 
-  // Calculate registration age score (max 15 points)
+// Calculate registration age score (max 15 points)
 function calculateRegistrationAgeScore(twitterCreatedAt: Date | null): ScoreBreakdown {
   if (!twitterCreatedAt) {
     return { score: 0, details: 'No registration time information' };
@@ -36,16 +36,16 @@ function calculateRegistrationAgeScore(twitterCreatedAt: Date | null): ScoreBrea
   const currentYear = new Date().getFullYear();
   const registrationYear = twitterCreatedAt.getFullYear();
   const yearsDiff = currentYear - registrationYear;
-  
+
   const score = Math.min(yearsDiff * 1.5, 15);
-  
+
   return {
     score: Math.round(score * 10) / 10,
     details: `Registered ${yearsDiff} years, score ${score.toFixed(1)}/15`
   };
 }
 
-  // Calculate follower count score (max 40 points)
+// Calculate follower count score (max 40 points)
 function calculateFollowersScore(followersCount: number | null): ScoreBreakdown {
   if (!followersCount || followersCount < 0) {
     return { score: 0, details: 'No follower data' };
@@ -61,26 +61,26 @@ function calculateFollowersScore(followersCount: number | null): ScoreBreakdown 
   } else if (followersCount <= 100000) {
     // 10K~100K: 10 + (follower count - 10K) / 90K × 15 points
     score = 10 + ((followersCount - 10000) / 90000) * 15;
-          details = `${followersCount.toLocaleString()} followers, 10K-100K tier`;
+    details = `${followersCount.toLocaleString()} followers, 10K-100K tier`;
   } else if (followersCount <= 1000000) {
     // 100K~1M: 25 + (follower count - 100K) / 900K × 10 points
     score = 25 + ((followersCount - 100000) / 900000) * 10;
-          details = `${followersCount.toLocaleString()} followers, 100K-1M tier`;
+    details = `${followersCount.toLocaleString()} followers, 100K-1M tier`;
   } else {
     // Over 1M: 35 + ((follower count - 1M) / 1M × 5), max 40 points
     score = Math.min(35 + ((followersCount - 1000000) / 1000000) * 5, 40);
-          details = `${followersCount.toLocaleString()} followers, over 1M tier`;
+    details = `${followersCount.toLocaleString()} followers, over 1M tier`;
   }
 
   return {
     score: Math.round(score * 10) / 10,
-          details: `${details}, score ${score.toFixed(1)}/40`
+    details: `${details}, score ${score.toFixed(1)}/40`
   };
 }
 
-  // Calculate following/follower ratio score (max 5 points)
+// Calculate following/follower ratio score (max 5 points)
 function calculateFollowingRatioScore(
-  followersCount: number | null, 
+  followersCount: number | null,
   friendsCount: number | null
 ): ScoreBreakdown {
   if (!followersCount || !friendsCount || followersCount === 0) {
@@ -101,7 +101,7 @@ function calculateFollowingRatioScore(
     } else if (ratio > 2) {
       distance = Math.log10(ratio / 2);
     }
-    
+
     score = Math.max(0, 5 - distance * 2);
   }
 
@@ -111,9 +111,9 @@ function calculateFollowingRatioScore(
   };
 }
 
-  // Calculate tweet count score (max 5 points)
+// Calculate tweet count score (max 5 points)
 function calculateTweetsScore(
-  statusesCount: number | null, 
+  statusesCount: number | null,
   twitterCreatedAt: Date | null
 ): ScoreBreakdown {
   if (!statusesCount || !twitterCreatedAt) {
@@ -123,7 +123,7 @@ function calculateTweetsScore(
   const currentDate = new Date();
   const registrationDate = twitterCreatedAt;
   const yearsDiff = (currentDate.getTime() - registrationDate.getTime()) / (1000 * 60 * 60 * 24 * 365);
-  
+
   if (yearsDiff <= 0) {
     return { score: 0, details: 'Registration time abnormal' };
   }
@@ -150,7 +150,7 @@ function calculateTweetsScore(
   };
 }
 
-  // Calculate verification score (max 5 points)
+// Calculate verification score (max 5 points)
 function calculateVerificationScore(verified: boolean | null): ScoreBreakdown {
   const score = verified ? 5 : 0;
   return {
@@ -159,7 +159,7 @@ function calculateVerificationScore(verified: boolean | null): ScoreBreakdown {
   };
 }
 
-  // Main calculation function
+// Main calculation function
 export function calculateAIScore(userData: UserData): ScoreCalculation {
   const registrationAge = calculateRegistrationAgeScore(userData.twitterCreatedAt);
   const followers = calculateFollowersScore(userData.followersCount);
@@ -192,42 +192,42 @@ async function calculateCompleteXogsBalance(userId: string, newAiScore: number, 
   const baseXogs = newAiScore * 10;
 
   // 2. Get invite rewards
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: {
-        invitesSent: {
-          select: {
-            invitee: {
-              select: {
-                aiScore: true,
-              }
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      invitesSent: {
+        select: {
+          invitee: {
+            select: {
+              aiScore: true,
             }
-          },
-        },
-        invitesReceived: {
-          select: {
-            inviter: {
-              select: {
-                aiScore: true,
-              }
-            }
-          },
+          }
         },
       },
-    });
-    
-    let totalInviteRewards = 0;
-    if (user) {
-      // Inviter rewards = each invitee's AI score × 2
-    const inviterRewards = (user.invitesSent || []).reduce((sum: number, invite: any) => {
-        return sum + (invite.invitee.aiScore * 2);
-      }, 0);
+      invitesReceived: {
+        select: {
+          inviter: {
+            select: {
+              aiScore: true,
+            }
+          }
+        },
+      },
+    },
+  });
 
-      // Invitee rewards = own AI score × 1 (only invited once)
+  let totalInviteRewards = 0;
+  if (user) {
+    // Inviter rewards = each invitee's AI score × 2
+    const inviterRewards = (user.invitesSent || []).reduce((sum: number, invite: any) => {
+      return sum + (invite.invitee.aiScore * 2);
+    }, 0);
+
+    // Invitee rewards = own AI score × 1 (only invited once)
     const inviteeRewards = user.invitesReceived ? (newAiScore * 1) : 0;
 
-      totalInviteRewards = inviterRewards + inviteeRewards;
-    }
+    totalInviteRewards = inviterRewards + inviteeRewards;
+  }
 
   // 3. Get daily checkin rewards
   const checkinRewards: any[] = await prisma.$queryRaw`
@@ -269,9 +269,8 @@ async function calculateCompleteXogsBalance(userId: string, newAiScore: number, 
 
 // Automatically update user AI score and xogs balance
 export async function autoUpdateUserAIScore(userId: string, userData: UserData): Promise<number> {
-  const { PrismaClient } = await import('@prisma/client');
-  const prisma = new PrismaClient();
-  
+  const { prisma } = await import('@/lib/database');
+
   try {
     const scoreCalculation = calculateAIScore(userData);
     const newScore = Math.round(scoreCalculation.totalScore);
@@ -282,7 +281,7 @@ export async function autoUpdateUserAIScore(userId: string, userData: UserData):
     // Update AI score and xogs balance in database
     await prisma.user.update({
       where: { id: userId },
-      data: { 
+      data: {
         aiScore: newScore,
         xogsBalance: correctXogsBalance,
       },
@@ -300,9 +299,8 @@ export async function autoUpdateUserAIScore(userId: string, userData: UserData):
 
 // Batch update all users' AI scores
 export async function batchUpdateAllUsersAIScore(): Promise<{ updated: number; failed: number }> {
-  const { PrismaClient } = await import('@prisma/client');
-  const prisma = new PrismaClient();
-  
+  const { prisma } = await import('@/lib/database');
+
   let updated = 0;
   let failed = 0;
 
@@ -345,7 +343,7 @@ export async function batchUpdateAllUsersAIScore(): Promise<{ updated: number; f
 
           await prisma.user.update({
             where: { id: user.id },
-            data: { 
+            data: {
               aiScore: newScore,
               xogsBalance: correctXogsBalance,
             },
@@ -356,7 +354,7 @@ export async function batchUpdateAllUsersAIScore(): Promise<{ updated: number; f
 
         updated++;
       } catch (error) {
-                  console.error(`Failed to update AI score for user ${user.id}:`, error);
+        console.error(`Failed to update AI score for user ${user.id}:`, error);
         failed++;
       }
     }
@@ -365,7 +363,5 @@ export async function batchUpdateAllUsersAIScore(): Promise<{ updated: number; f
   } catch (error) {
     console.error('Batch update AI scores failed:', error);
     throw error;
-  } finally {
-    await prisma.$disconnect();
   }
 } 
