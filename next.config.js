@@ -7,7 +7,18 @@ const nextConfig = {
     serverComponentsExternalPackages: ['@prisma/client'],
   },
   webpack: (config) => {
-    config.externals.push("pino-pretty", "lokijs", "encoding", "crypto", "stream", "http", "https", "zlib", "url", "querystring");
+    config.externals.push({
+      "pino-pretty": "commonjs pino-pretty",
+      "lokijs": "commonjs lokijs",
+      "encoding": "commonjs encoding",
+      "crypto": "node:crypto",
+      "stream": "node:stream",
+      "http": "node:http",
+      "https": "node:https",
+      "zlib": "node:zlib",
+      "url": "node:url",
+      "querystring": "node:querystring"
+    });
     return config;
   },
   env: {
