@@ -1,17 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-export default function AuthError() {
+function AuthErrorContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [error, setError] = useState('')
 
   useEffect(() => {
     const errorParam = searchParams?.get('error')
-    
+
     // 映射常见的NextAuth错误到中文消息
     const errorMessages: Record<string, string> = {
       'Configuration': '配置错误：请检查应用配置',
@@ -41,11 +41,11 @@ export default function AuthError() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
             </svg>
           </div>
-          
+
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
             登录失败
           </h2>
-          
+
           <p className="mt-2 text-sm text-gray-600">
             {error}
           </p>
@@ -59,14 +59,14 @@ export default function AuthError() {
             >
               重新登录
             </Link>
-            
+
             <Link
               href="/"
               className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
             >
               返回首页
             </Link>
-            </div>
+          </div>
 
           <div className="text-center">
             <details className="group">
@@ -89,5 +89,13 @@ export default function AuthError() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AuthError() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <AuthErrorContent />
+    </Suspense>
   )
 } 
