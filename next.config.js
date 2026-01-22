@@ -5,7 +5,6 @@ const nextConfig = {
   },
   experimental: {
     serverComponentsExternalPackages: ['@prisma/client'],
-    serverActions: true
   },
   webpack: (config) => {
     config.externals.push("pino-pretty", "lokijs", "encoding");
