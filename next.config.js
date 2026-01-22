@@ -10,8 +10,8 @@ const nextConfig = {
     // Use aliases for polyfills instead of externals
     config.resolve.alias = {
       ...config.resolve.alias,
-      crypto: require.resolve('crypto-browserify'),
-      'node:crypto': require.resolve('crypto-browserify'),
+      crypto: false, // Force use of global Web Crypto by stubbing Node crypto
+      'node:crypto': false,
       stream: require.resolve('stream-browserify'),
       'node:stream': require.resolve('stream-browserify'),
       http: require.resolve('stream-http'),
