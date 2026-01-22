@@ -6,8 +6,7 @@ import { PrismaNeon } from '@prisma/adapter-neon'
 const prismaClientSingleton = () => {
   if (process.env.NODE_ENV === 'production') {
     const pool = new Pool({ connectionString: process.env.DATABASE_URL })
-    // @ts-ignore: Version mismatch between specific neon/prisma versions
-    const adapter = new PrismaNeon(pool)
+    const adapter = new PrismaNeon(pool as any)
     return new PrismaClient({ adapter })
   }
 
