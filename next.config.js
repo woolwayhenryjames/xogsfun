@@ -7,7 +7,7 @@ const nextConfig = {
     serverComponentsExternalPackages: ['@prisma/client'],
   },
   webpack: (config) => {
-    config.externals.push("pino-pretty", "lokijs", "encoding");
+    config.externals.push("pino-pretty", "lokijs", "encoding", "crypto");
     return config;
   },
   env: {
