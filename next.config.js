@@ -7,18 +7,22 @@ const nextConfig = {
     serverComponentsExternalPackages: ['@prisma/client'],
   },
   webpack: (config) => {
-    config.externals.push({
-      "pino-pretty": "commonjs pino-pretty",
-      "lokijs": "commonjs lokijs",
-      "encoding": "commonjs encoding",
-      "crypto": "commonjs crypto",
-      "stream": "commonjs stream",
-      "http": "commonjs http",
-      "https": "commonjs https",
-      "zlib": "commonjs zlib",
-      "url": "commonjs url",
-      "querystring": "commonjs querystring"
-    });
+    // Use aliases for polyfills instead of externals
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+      http: require.resolve('stream-http'),
+      https: require.resolve('https-browserify'),
+      zlib: require.resolve('browserify-zlib'),
+      url: require.resolve('url'),
+      querystring: require.resolve('querystring-es3'),
+    };
+
+    // Also keep the safe externals if needed, or remove completely if handled by polyfills.
+    // pino-pretty etc might still need to be external if they are server-only tools.
+    config.externals.push("pino-pretty", "lokijs", "encoding");
+
     return config;
   },
   env: {
