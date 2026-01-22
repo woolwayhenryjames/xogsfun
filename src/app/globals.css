@@ -1,0 +1,1418 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 212 100% 47%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 98%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 98%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 98%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 212 100% 47%;
+    --radius: 20px;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 212 100% 47%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212 100% 47%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    line-height: 1.5;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    min-height: 100vh;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+    max-width: 428px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+
+  /* Apple-style scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+@layer components {
+  /* Apple-style Core Components */
+  .apple-card {
+    @apply bg-white rounded-3xl border border-gray-100/50 p-8;
+    box-shadow: 
+      0 4px 25px -4px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(255, 255, 255, 0.5);
+    backdrop-filter: saturate(180%) blur(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (hover: hover) and (min-width: 768px) {
+    .apple-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 12px 40px -8px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  .apple-card-compact {
+    @apply apple-card p-6;
+  }
+
+  .apple-card-minimal {
+    @apply apple-card p-4;
+  }
+
+  .apple-button {
+    @apply inline-flex items-center justify-center rounded-2xl px-6 py-3 text-base font-semibold;
+    @apply bg-blue-600 text-white shadow-lg;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: -0.01em;
+  }
+
+  @media (hover: hover) and (min-width: 768px) {
+    .apple-button:hover {
+      @apply bg-blue-700;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px -8px rgba(59, 130, 246, 0.5);
+    }
+  }
+
+  .apple-button:active {
+    transform: translateY(0);
+    @apply bg-blue-800;
+  }
+
+  .apple-button-secondary {
+    @apply inline-flex items-center justify-center rounded-2xl px-6 py-3 text-base font-semibold;
+    @apply bg-gray-100 text-gray-900 shadow-sm;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: -0.01em;
+  }
+
+  @media (hover: hover) and (min-width: 768px) {
+    .apple-button-secondary:hover {
+      @apply bg-gray-200;
+      transform: translateY(-1px);
+    }
+  }
+
+  .apple-button-outline {
+    @apply inline-flex items-center justify-center rounded-2xl px-6 py-3 text-base font-semibold;
+    @apply bg-transparent text-blue-600 border-2 border-blue-600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: -0.01em;
+  }
+
+  @media (hover: hover) and (min-width: 768px) {
+    .apple-button-outline:hover {
+      @apply bg-blue-600 text-white;
+      transform: translateY(-1px);
+    }
+  }
+
+  .apple-input {
+    @apply w-full rounded-2xl border border-gray-200 px-4 py-3 text-base;
+    @apply focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 focus:outline-none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: -0.01em;
+  }
+
+  /* Typography System */
+  .apple-title-large {
+    @apply text-5xl md:text-6xl font-bold text-gray-900 leading-tight;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
+
+  .apple-title {
+    @apply text-4xl md:text-5xl font-bold text-gray-900 leading-tight;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
+
+  .apple-heading {
+    @apply text-3xl md:text-4xl font-bold text-gray-900 leading-tight;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+
+  .apple-subheading {
+    @apply text-2xl md:text-3xl font-semibold text-gray-900 leading-tight;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+
+  .apple-body-large {
+    @apply text-xl text-gray-600 leading-relaxed;
+    letter-spacing: -0.01em;
+  }
+
+  .apple-body {
+    @apply text-lg text-gray-600 leading-relaxed;
+    letter-spacing: -0.01em;
+  }
+
+  .apple-caption {
+    @apply text-base text-gray-500;
+    letter-spacing: -0.005em;
+  }
+
+  /* Navigation */
+  .apple-nav {
+    @apply sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100/50 shadow-sm;
+    padding: 1rem 1.5rem;
+  }
+
+  .apple-nav-brand {
+    @apply flex items-center space-x-3;
+  }
+
+  .apple-nav-brand span {
+    @apply text-xl font-bold text-gray-900;
+  }
+
+  /* Score Card */
+  .apple-score-card {
+    @apply relative overflow-hidden rounded-3xl p-8 text-center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .apple-score-number {
+    @apply text-5xl font-bold mb-2;
+    background: linear-gradient(135deg, currentColor 0%, currentColor 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .apple-score-label {
+    @apply text-sm font-semibold uppercase tracking-wide;
+  }
+
+  /* Stats Cards */
+  .apple-stat-card {
+    @apply apple-card-compact text-center;
+  }
+
+  .apple-stat-value {
+    @apply text-3xl font-bold text-gray-900 mb-1;
+    letter-spacing: -0.02em;
+  }
+
+  .apple-stat-label {
+    @apply apple-caption;
+  }
+
+  /* Feature Cards */
+  .apple-feature-card {
+    @apply apple-card-compact;
+  }
+
+  .apple-feature-icon {
+    @apply w-14 h-14 rounded-2xl flex items-center justify-center mb-4;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  }
+
+  .apple-feature-title {
+    @apply text-xl font-semibold text-gray-900 mb-2;
+    letter-spacing: -0.01em;
+  }
+
+  .apple-feature-description {
+    @apply apple-body;
+  }
+
+  /* Profile Components */
+  .apple-profile-card {
+    @apply apple-card;
+  }
+
+  .apple-avatar {
+    @apply rounded-2xl shadow-lg;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (hover: hover) and (min-width: 768px) {
+    .apple-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  /* Grid System */
+  .apple-grid {
+    @apply grid gap-6;
+  }
+
+  .apple-grid-2 {
+    @apply apple-grid grid-cols-2;
+  }
+
+  .apple-grid-3 {
+    @apply apple-grid grid-cols-1 md:grid-cols-3;
+  }
+
+  /* Bottom Navigation */
+  .apple-bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 z-50;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: env(safe-area-inset-bottom, 0) 0 0 0;
+  }
+
+  .apple-bottom-nav nav {
+    @apply flex items-center justify-around px-6 py-3;
+    max-width: 428px;
+    margin: 0 auto;
+  }
+
+  .apple-bottom-nav-item {
+    @apply flex flex-col items-center justify-center p-2 rounded-xl;
+    @apply text-gray-600 font-medium text-xs;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .apple-bottom-nav-item:hover {
+    @apply text-blue-600 bg-blue-50;
+    transform: scale(1.05);
+  }
+
+  .apple-bottom-nav-item.active {
+    @apply text-blue-600 bg-blue-100;
+    transform: scale(1.1);
+  }
+
+  .apple-bottom-nav-item svg {
+    @apply mb-1;
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Animations */
+  .apple-fade-in {
+    animation: fade-in 0.6s ease-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .apple-slide-up {
+    animation: slide-up 0.6s ease-out;
+  }
+
+  @keyframes slide-up {
+  from {
+    opacity: 0;
+      transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  .apple-scale-in {
+    animation: scale-in 0.4s ease-out;
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .apple-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .apple-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .apple-bounce {
+    animation: bounce-soft 1s ease-in-out infinite;
+  }
+
+  @keyframes bounce-soft {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .apple-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 0px, #e0e0e0 40px, #f0f0f0 80px);
+    background-size: 600px;
+    animation: shimmer 1.6s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: calc(200px + 100%) 0;
+    }
+  }
+
+  /* Focus styles for accessibility */
+  .apple-button:focus-visible,
+  .apple-input:focus-visible {
+    @apply outline-none ring-4 ring-blue-500/30;
+  }
+
+  /* Utility classes */
+  .apple-gradient-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .apple-glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .apple-glass-strong {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+  }
+
+  /* Enhanced Shadow System */
+  .apple-shadow-sm {
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+
+  .apple-shadow {
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.05),
+      0 2px 4px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .apple-shadow-lg {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Gradient Enhancements */
+  .apple-gradient-blue {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .apple-gradient-purple {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  }
+
+  .apple-gradient-orange {
+    background: linear-gradient(135deg, #ffa751 0%, #ffe259 100%);
+  }
+
+  .apple-gradient-green {
+    background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+  }
+
+  /* Micro-interactions */
+  .apple-hover-lift {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (hover: hover) and (min-width: 768px) {
+    .apple-hover-lift:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .apple-hover-scale {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (hover: hover) and (min-width: 768px) {
+    .apple-hover-scale:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  /* Enhanced Focus States */
+  .apple-focus-ring:focus-visible {
+    outline: none;
+    box-shadow: 
+      0 0 0 2px rgba(255, 255, 255, 1),
+      0 0 0 4px rgba(59, 130, 246, 0.5);
+  }
+
+  /* Loading States */
+  .apple-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* Pulse Animation */
+  .apple-pulse {
+    animation: applePulse 2s infinite;
+  }
+
+  @keyframes applePulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Enhanced Glassmorphism */
+  .apple-glass-strong {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: saturate(200%) blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  /* Floating Elements */
+  .apple-float {
+    animation: appleFloat 3s ease-in-out infinite;
+  }
+
+  @keyframes appleFloat {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  /* Better Typography Hierarchy */
+  .apple-text-accent {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Interactive States */
+  .apple-interactive {
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .apple-interactive:active {
+    transform: scale(0.98);
+  }
+
+  /* Enhanced Border Radius System */
+  .apple-rounded-sm { border-radius: 8px; }
+  .apple-rounded { border-radius: 12px; }
+  .apple-rounded-lg { border-radius: 16px; }
+  .apple-rounded-xl { border-radius: 20px; }
+  .apple-rounded-2xl { border-radius: 24px; }
+  .apple-rounded-3xl { border-radius: 32px; }
+
+  /* Improved Spacing System */
+  .apple-space-y-sm > * + * { margin-top: 0.75rem; }
+  .apple-space-y > * + * { margin-top: 1rem; }
+  .apple-space-y-lg > * + * { margin-top: 1.5rem; }
+  .apple-space-y-xl > * + * { margin-top: 2rem; }
+
+  /* Hide scrollbar utility */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* INFOFI页面专用样式 */
+.infofi-gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.infofi-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.infofi-card-hover:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.infofi-glow {
+  position: relative;
+}
+
+.infofi-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(147, 51, 234, 0.5), 0 0 40px rgba(147, 51, 234, 0.2);
+  }
+}
+
+.infofi-shimmer-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #667eea 50%, #764ba2 75%, #667eea 100%);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.infofi-pulse-ring {
+  position: relative;
+}
+
+.infofi-pulse-ring::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(147, 51, 234, 0.6);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+.infofi-bounce {
+  animation: bounce-soft 2s ease-in-out infinite;
+}
+
+.infofi-typing {
+  overflow: hidden;
+  border-right: 2px solid #667eea;
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: #667eea; }
+}
+
+/* 滚动条美化 - INFOFI专用 */
+.infofi-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(147, 51, 234, 0.3) transparent;
+}
+
+.infofi-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.infofi-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.infofi-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(147, 51, 234, 0.3);
+  border-radius: 3px;
+}
+
+.infofi-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(147, 51, 234, 0.5);
+}
+
+/* INFOFI 特殊效果 */
+.infofi-typing-effect {
+  overflow: hidden;
+  border-right: 2px solid #667eea;
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+}
+
+/* INFOFI 响应式优化 */
+@media (max-width: 428px) {
+  .apple-nav {
+    padding: 0.75rem 1rem;
+  }
+  
+  .apple-card {
+    @apply p-4;
+  }
+  
+  .apple-score-card {
+    @apply p-6;
+  }
+  
+  .apple-score-number {
+    @apply text-4xl;
+  }
+  
+  .apple-heading {
+    @apply text-2xl;
+  }
+}
+
+/* INFOFI 深色主题支持 */
+@media (prefers-color-scheme: dark) {
+  .infofi-card-hover {
+    background: rgba(15, 23, 42, 0.9);
+    border-color: rgba(71, 85, 105, 0.3);
+  }
+  
+  .infofi-shimmer-text {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 25%, #8b5cf6 50%, #a855f7 75%, #8b5cf6 100%);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* INFOFI 触觉反馈效果 */
+@media (hover: hover) {
+  .infofi-card-hover:hover {
+    transform: translateY(-6px) scale(1.03);
+  }
+}
+
+/* INFOFI 性能优化 */
+.infofi-gpu-accelerated {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* INFOFI 可访问性增强 */
+@media (prefers-reduced-motion: reduce) {
+  .infofi-glow,
+  .infofi-shimmer-text,
+  .infofi-pulse-ring::before,
+  .infofi-bounce,
+  .apple-float,
+  .apple-pulse {
+    animation: none;
+  }
+  
+  .infofi-card-hover:hover {
+    transform: none;
+  }
+}
+
+/* TASK 任务系统样式 */
+
+/* Task system animations */
+@keyframes task-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes task-shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+@keyframes task-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes task-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+  50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.4); }
+}
+
+@keyframes task-progress {
+  0% { width: 0%; }
+  100% { width: var(--progress-width); }
+}
+
+@keyframes task-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes task-fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes task-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes task-celebration {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.2) rotate(5deg); }
+  50% { transform: scale(1.1) rotate(-5deg); }
+  75% { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Task system utility classes */
+.task-bounce {
+  animation: task-bounce 2s infinite;
+}
+
+.task-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background-size: 200px 100%;
+  animation: task-shimmer 2s infinite;
+}
+
+.task-float {
+  animation: task-float 3s ease-in-out infinite;
+}
+
+.task-glow {
+  animation: task-glow 2s ease-in-out infinite alternate;
+}
+
+.task-progress-bar {
+  transition: width 0.8s ease-in-out;
+}
+
+.task-rotate {
+  animation: task-rotate 1s linear infinite;
+}
+
+.task-fade-in {
+  animation: task-fade-in 0.5s ease-out;
+}
+
+.task-pulse-ring {
+  animation: task-pulse-ring 1.5s ease-out infinite;
+}
+
+.task-celebration {
+  animation: task-celebration 0.8s ease-in-out;
+}
+
+/* Task card hover effects */
+.task-card {
+  transition: all 0.3s ease;
+  transform: translateY(0);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.task-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Task status indicators */
+.task-status-pending {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  color: #6b7280;
+}
+
+.task-status-completed {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  animation: task-pulse-ring 2s ease-out infinite;
+}
+
+.task-status-claimed {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+}
+
+/* Task difficulty indicators */
+.task-difficulty-easy {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.task-difficulty-medium {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.task-difficulty-hard {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+/* Task category indicators */
+.task-category-daily {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  box-shadow: 0 2px 10px rgba(249, 115, 22, 0.3);
+}
+
+.task-category-social {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+}
+
+.task-category-engagement {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+}
+
+.task-category-special {
+  background: linear-gradient(135deg, #eab308, #ca8a04);
+  box-shadow: 0 2px 10px rgba(234, 179, 8, 0.3);
+}
+
+/* Task reward animation */
+.task-reward-claim {
+  animation: task-bounce 0.5s ease-in-out;
+}
+
+.task-reward-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.task-reward-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: task-shimmer 2s infinite;
+}
+
+/* Task streak indicator */
+.task-streak-fire {
+  animation: task-float 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(251, 146, 60, 0.5));
+}
+
+/* Task completion celebration */
+.task-celebrate {
+  animation: task-celebration 0.6s ease-in-out;
+}
+
+/* Task progress bars */
+.task-progress-container {
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.task-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.task-progress-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: task-shimmer 2s infinite;
+}
+
+/* Task button effects */
+.task-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.task-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.task-button:hover::before {
+  left: 100%;
+}
+
+.task-button:active {
+  transform: scale(0.95);
+}
+
+/* Task icon animations */
+.task-icon-spin {
+  animation: task-rotate 2s linear infinite;
+}
+
+.task-icon-bounce {
+  animation: task-bounce 1s ease-in-out infinite;
+}
+
+.task-icon-float {
+  animation: task-float 2s ease-in-out infinite;
+}
+
+/* Task glassmorphism effects */
+.task-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.task-glass-strong {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Task loading states */
+.task-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.task-loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: task-shimmer 1.5s infinite;
+}
+
+/* Task responsive design */
+@media (max-width: 640px) {
+  .task-card {
+    padding: 1rem;
+  }
+  
+  .task-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Task accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .task-bounce,
+  .task-shimmer,
+  .task-float,
+  .task-glow,
+  .task-rotate,
+  .task-fade-in,
+  .task-pulse-ring,
+  .task-celebration {
+    animation: none;
+  }
+  
+  .task-card:hover {
+    transform: none;
+  }
+}
+
+/* Task dark mode support */
+@media (prefers-color-scheme: dark) {
+  .task-glass {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .task-glass-strong {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Task tooltip effects */
+.task-tooltip {
+  position: relative;
+}
+
+.task-tooltip::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.task-tooltip:hover::before {
+  opacity: 1;
+}
+
+/* ========== Solana页面专用动画样式 ========== */
+
+/* Solana页面淡入向上动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Solana页面滑动向下动画 */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Solana页面浮动动画 */
+@keyframes solanaFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Solana页面发光动画 */
+@keyframes solanaGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(147, 51, 234, 0.5);
+  }
+}
+
+/* Solana页面动画类 */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.5s ease-out;
+}
+
+.animate-solana-float {
+  animation: solanaFloat 3s ease-in-out infinite;
+}
+
+.animate-solana-glow {
+  animation: solanaGlow 2s ease-in-out infinite;
+}
+
+/* Solana页面增强的滚动条样式 */
+.solana-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.solana-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.solana-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #8b5cf6, #3b82f6);
+  border-radius: 10px;
+}
+
+.solana-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #7c3aed, #2563eb);
+}
+
+/* Solana页面玻璃态效果 */
+.solana-glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Solana页面增强按钮效果 */
+.solana-btn-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transition: all 0.3s ease;
+}
+
+.solana-btn-gradient:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Solana页面加载动画改进 */
+.solana-loading-dot {
+  animation: solanaLoading 1.4s infinite ease-in-out both;
+}
+
+.solana-loading-dot:nth-child(1) { animation-delay: -0.32s; }
+.solana-loading-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes solanaLoading {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* Solana页面卡片悬浮效果 */
+.solana-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.solana-card-hover:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Solana页面渐变文字效果 */
+.solana-gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: solanaGradientShift 3s ease infinite;
+}
+
+@keyframes solanaGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Solana页面脉冲环效果 */
+.solana-pulse-ring {
+  position: relative;
+}
+
+.solana-pulse-ring::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(147, 51, 234, 0.6);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: solanaPulseRing 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+@keyframes solanaPulseRing {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Solana页面响应式优化 */
+@media (max-width: 428px) {
+  .animate-fade-in-up {
+    animation-duration: 0.4s;
+  }
+  
+  .solana-card-hover:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
+}
+
+/* Solana页面可访问性增强 */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-slide-down,
+  .animate-solana-float,
+  .animate-solana-glow,
+  .solana-gradient-text,
+  .solana-pulse-ring::before {
+    animation: none;
+  }
+  
+  .solana-card-hover:hover {
+    transform: none;
+  }
+} 

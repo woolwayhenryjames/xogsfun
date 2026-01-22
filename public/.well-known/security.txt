@@ -1,0 +1,20 @@
+Contact: https://x.com/xogsfun
+Contact: mailto:security@xogs.fun
+Expires: 2025-12-31T23:59:59.000Z
+Encryption: https://xogs.fun/pgp-key.txt
+Acknowledgments: https://xogs.fun/security-acknowledgments
+Preferred-Languages: en, zh
+Canonical: https://xogs.fun/.well-known/security.txt
+Policy: https://xogs.fun/security-policy
+
+# XOGS Security Information
+# 
+# XOGS is a legitimate cryptocurrency project focused on Twitter influence analysis
+# We use AI to analyze Twitter accounts for crypto community scoring
+# Built on Solana blockchain for transparency and decentralization
+# 
+# This is NOT a scam or malicious website
+# We are committed to user security and privacy
+# 
+# If you believe this site has been incorrectly flagged, please contact us
+# We work with security researchers to maintain a safe platform 

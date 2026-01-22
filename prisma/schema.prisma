@@ -1,0 +1,205 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id               String           @id @default(cuid())
+  twitterId        String           @unique
+  name             String?
+  username         String?
+  profileImageUrl  String?
+  description      String?
+  url              String?
+  followersCount   Int?
+  friendsCount     Int?
+  statusesCount    Int?
+  verified         Boolean?         @default(false)
+  twitterCreatedAt DateTime?
+  location         String?
+  lang             String?
+  xogsBalance      Int              @default(0)
+  aiScore          Int              @default(0)
+  inviterId        String?
+  inviteCode       String?          @unique
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  platformId       Int              @unique @default(10000)
+  email            String?          @unique
+  emailVerified    DateTime?
+  image            String?
+  twitterUsername  String?          @unique
+  accessToken      String?
+  refreshToken     String?
+  tokenExpiresAt   DateTime?
+  solanaAddress    String?          @unique
+  accounts         Account[]
+  invitesReceived  Invite?          @relation("InviteeRelation")
+  invitesSent      Invite[]         @relation("InviterRelation")
+  sessions         Session[]
+  tweets           Tweet[]
+  daily_checkins   daily_checkins[]
+  task_stats       task_stats?
+  user_tasks       user_tasks[]
+}
+
+model Invite {
+  id        String   @id @default(uuid())
+  inviterId String
+  inviteeId String   @unique(map: "Invite_inviteeId_unique")
+  createdAt DateTime @default(now())
+  reward    Float    @default(0)
+  invitee   User     @relation("InviteeRelation", fields: [inviteeId], references: [id])
+  inviter   User     @relation("InviterRelation", fields: [inviterId], references: [id])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model PlatformIdSequence {
+  id           String   @id @default("singleton")
+  currentValue Int      @default(10000)
+  updatedAt    DateTime @updatedAt
+}
+
+model Tweet {
+  id           String    @id @default(cuid())
+  userId       String
+  content      String
+  tweetId      String?
+  sponsor      String
+  aiPrompt     String?
+  status       String    @default("pending")
+  errorMessage String?
+  createdAt    DateTime  @default(now())
+  publishedAt  DateTime?
+  tweetUrl     String?
+  rewardAmount Int?      @default(0)
+  rewardType   String?   @default("infofi_daily")
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+}
+
+model daily_checkins {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(255)
+  user_id      String    @db.VarChar(255)
+  checkin_date DateTime  @db.Date
+  streak_count Int?      @default(1)
+  reward       Int       @default(0)
+  created_at   DateTime? @default(now()) @db.Timestamp(6)
+  ai_score     Int?      @default(0)
+  multiplier   Decimal?  @default(1.00) @db.Decimal(3, 2)
+  description  String?
+  User         User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([user_id, checkin_date])
+  @@index([checkin_date], map: "idx_daily_checkins_date")
+  @@index([user_id], map: "idx_daily_checkins_user_id")
+  @@index([user_id, reward(sort: Desc)], map: "idx_daily_checkins_user_reward")
+}
+
+model task_stats {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(255)
+  user_id         String    @unique @db.VarChar(255)
+  total_tasks     Int?      @default(0)
+  completed_tasks Int?      @default(0)
+  total_rewards   Int?      @default(0)
+  current_streak  Int?      @default(0)
+  max_streak      Int?      @default(0)
+  last_activity   DateTime? @default(now()) @db.Timestamp(6)
+  created_at      DateTime? @default(now()) @db.Timestamp(6)
+  updated_at      DateTime? @default(now()) @db.Timestamp(6)
+  User            User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([user_id], map: "idx_task_stats_user_id")
+}
+
+model tasks {
+  id             String       @id @db.VarChar(255)
+  type           String       @db.VarChar(100)
+  title          String       @db.VarChar(255)
+  description    String?
+  reward         Int          @default(0)
+  icon           String?      @db.VarChar(50)
+  difficulty     String?      @default("easy") @db.VarChar(20)
+  category       String?      @default("daily") @db.VarChar(50)
+  requirements   Json?        @default("{}")
+  is_repeatable  Boolean?     @default(false)
+  cooldown_hours Int?         @default(0)
+  is_active      Boolean?     @default(true)
+  created_at     DateTime?    @default(now()) @db.Timestamp(6)
+  updated_at     DateTime?    @default(now()) @db.Timestamp(6)
+  user_tasks     user_tasks[]
+}
+
+model user_tasks {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(255)
+  user_id      String    @db.VarChar(255)
+  task_id      String    @db.VarChar(255)
+  status       String?   @default("pending") @db.VarChar(20)
+  completed_at DateTime? @db.Timestamp(6)
+  claimed_at   DateTime? @db.Timestamp(6)
+  reward       Int       @default(0)
+  metadata     Json?     @default("{}")
+  created_at   DateTime? @default(now()) @db.Timestamp(6)
+  updated_at   DateTime? @default(now()) @db.Timestamp(6)
+  tasks        tasks     @relation(fields: [task_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User         User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([completed_at], map: "idx_user_tasks_completed_at")
+  @@index([status], map: "idx_user_tasks_status")
+  @@index([task_id], map: "idx_user_tasks_task_id")
+  @@index([user_id], map: "idx_user_tasks_user_id")
+}
+
+model Partner {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String
+  isActive    Boolean  @default(true)
+  displayOrder Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
+}
