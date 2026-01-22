@@ -11,13 +11,13 @@ const nextConfig = {
       "pino-pretty": "commonjs pino-pretty",
       "lokijs": "commonjs lokijs",
       "encoding": "commonjs encoding",
-      "crypto": "commonjs node:crypto",
-      "stream": "commonjs node:stream",
-      "http": "commonjs node:http",
-      "https": "commonjs node:https",
-      "zlib": "commonjs node:zlib",
-      "url": "commonjs node:url",
-      "querystring": "commonjs node:querystring"
+      "crypto": "commonjs crypto",
+      "stream": "commonjs stream",
+      "http": "commonjs http",
+      "https": "commonjs https",
+      "zlib": "commonjs zlib",
+      "url": "commonjs url",
+      "querystring": "commonjs querystring"
     });
     return config;
   },
