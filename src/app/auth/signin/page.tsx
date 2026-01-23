@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 import { Sparkles, Twitter } from 'lucide-react';
-import { XLogoMinimal } from '@/components/XLogo';
-import { BottomNavigation } from '@/components/BottomNavigation';
+import { XLogoMinimal } from '../../../components/XLogo';
+import { BottomNavigation } from '../../../components/BottomNavigation';
 
 export default function SignIn() {
   const router = useRouter()
@@ -25,13 +25,13 @@ export default function SignIn() {
   const handleTwitterSignIn = async () => {
     setIsLoading(true)
     setError('')
-    
+
     try {
       const result = await signIn('twitter', {
         callbackUrl: '/',
         redirect: false,
       })
-      
+
       if (result?.error) {
         setError('Login failed: ' + result.error)
       } else if (result?.url) {
@@ -55,13 +55,13 @@ export default function SignIn() {
             <XLogoMinimal className="w-10 h-10" />
             <span>Sign In</span>
           </div>
-          
-        <Link 
-          href="/" 
+
+          <Link
+            href="/"
             className="apple-button-outline px-4 py-2 text-sm"
-        >
-          Back to Home
-        </Link>
+          >
+            Back to Home
+          </Link>
         </div>
       </nav>
 
@@ -70,19 +70,19 @@ export default function SignIn() {
         <div className="apple-card text-center apple-scale-in">
           <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
             <Sparkles className="h-8 w-8 text-white" />
-            </div>
-            
+          </div>
+
           <h1 className="apple-title mb-4">Welcome Back</h1>
-            
+
           <p className="apple-body-large text-center mb-8">
-              Sign in with your Twitter account to start your data analysis journey
-            </p>
+            Sign in with your Twitter account to start your data analysis journey
+          </p>
 
           {/* Error Message */}
           {error && (
             <div className="apple-card bg-red-50 border-red-200 mb-6">
               <div className="text-sm text-red-700">{error}</div>
-          </div>
+            </div>
           )}
 
           {/* Sign In Button */}
@@ -98,9 +98,9 @@ export default function SignIn() {
             )}
             {isLoading ? 'Signing in...' : 'Sign in with Twitter'}
           </button>
-            
-            {/* Security Notice */}
-            <div className="text-center space-y-2">
+
+          {/* Security Notice */}
+          <div className="text-center space-y-2">
             <p className="apple-caption">🔒 Secure OAuth 2.0 Authentication</p>
             <p className="apple-caption">We don't store your password</p>
           </div>

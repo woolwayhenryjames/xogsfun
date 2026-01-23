@@ -2,9 +2,9 @@
 
 import { Info, Twitter, Database, RefreshCw, AlertCircle, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
-import { BottomNavigation } from '@/components/BottomNavigation';
-import { UserDropdown } from '@/components/UserDropdown';
-import { TwitterSignInButton } from '@/components/TwitterSignInButton';
+import { BottomNavigation } from '../../components/BottomNavigation';
+import { UserDropdown } from '../../components/UserDropdown';
+import { TwitterSignInButton } from '../../components/TwitterSignInButton';
 import { useSession } from 'next-auth/react';
 
 export default function DataInfoPage() {
@@ -21,7 +21,7 @@ export default function DataInfoPage() {
             </div>
             <span>Data Info</span>
           </div>
-          
+
           {session?.user ? (
             <UserDropdown />
           ) : (
@@ -153,8 +153,8 @@ export default function DataInfoPage() {
 
         {/* Back Button */}
         <div className="apple-card apple-slide-up">
-          <Link 
-            href="/profile" 
+          <Link
+            href="/profile"
             className="apple-button w-full text-center"
           >
             Back to Profile

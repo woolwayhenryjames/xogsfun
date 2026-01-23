@@ -7,8 +7,8 @@ import { autoUpdateUserAIScore } from "@/lib/aiScore"
 export const authOptions: NextAuthOptions = {
   providers: [
     TwitterProvider({
-      clientId: process.env.TWITTER_CLIENT_ID!,
-      clientSecret: process.env.TWITTER_CLIENT_SECRET!,
+      clientId: process.env.TWITTER_CLIENT_ID || "placeholder_client_id",
+      clientSecret: process.env.TWITTER_CLIENT_SECRET || "placeholder_client_secret",
       version: "2.0",
       authorization: {
         url: "https://twitter.com/i/oauth2/authorize",
@@ -25,16 +25,16 @@ export const authOptions: NextAuthOptions = {
 
     }),
   ],
-  
+
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  
+
   callbacks: {
     async signIn({ user, account, profile }) {
       // SignIn callback processing
-      
+
       if (account?.provider !== "twitter") {
         console.error("Invalid provider")
         return false
@@ -87,8 +87,8 @@ export const authOptions: NextAuthOptions = {
             where: { twitterId },
             data: userData
           })
-                      // User information updated
-          
+          // User information updated
+
           // Auto-update AI score
           try {
             const aiScore = await autoUpdateUserAIScore(existingUser.id, {
@@ -98,14 +98,14 @@ export const authOptions: NextAuthOptions = {
               verified: userData.verified,
               twitterCreatedAt: detailedData?.created_at ? new Date(detailedData.created_at) : existingUser.twitterCreatedAt,
             });
-                          // AI score auto-updated
+            // AI score auto-updated
           } catch (error) {
             console.error('Auto-update AI score failed during login:', error);
           }
         } else {
           // Create new user
           const platformId = await getNextPlatformId()
-          
+
           const newUser = await prisma.user.create({
             data: {
               id: user.id,
@@ -115,9 +115,9 @@ export const authOptions: NextAuthOptions = {
               ...userData
             }
           })
-                      // New user created
-          
-                    // Auto-calculate AI score for new users
+          // New user created
+
+          // Auto-calculate AI score for new users
           try {
             const aiScore = await autoUpdateUserAIScore(newUser.id, {
               followersCount: userData.followersCount,
@@ -165,7 +165,7 @@ export const authOptions: NextAuthOptions = {
             const dbUser = await prisma.user.findUnique({
               where: { twitterId: token.twitterId as string }
             })
-            
+
             if (dbUser) {
               session.user = {
                 ...session.user,
@@ -196,14 +196,14 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
-  
+
   pages: {
     signIn: '/auth/signin',
     error: '/auth/error',
   },
-  
-      debug: false,
-  
+
+  debug: false,
+
   logger: {
     error(code, metadata) {
       console.error("NextAuth Error:", code, metadata)
@@ -211,8 +211,8 @@ export const authOptions: NextAuthOptions = {
     warn(code) {
       console.warn("NextAuth Warning:", code)
     },
-          debug(code, metadata) {
-        // Debug disabled for production
-      },
+    debug(code, metadata) {
+      // Debug disabled for production
+    },
   },
 } 

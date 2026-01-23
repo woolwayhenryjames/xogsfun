@@ -1,12 +1,12 @@
-export const runtime = 'edge'
+// Removed for build compatibility
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from "@/lib/auth";
-import { Leaderboard } from '@/components/Leaderboard'
-import { BottomNavigation } from '@/components/BottomNavigation'
-import { TwitterFooterLink } from '@/components/TwitterFooterLink'
+import { Leaderboard } from '../../components/Leaderboard'
+import { BottomNavigation } from '../../components/BottomNavigation'
+import { TwitterFooterLink } from '../../components/TwitterFooterLink'
 import { Trophy } from 'lucide-react'
-import { UserDropdown } from '@/components/UserDropdown'
+import { UserDropdown } from '../../components/UserDropdown'
 
 export default async function LeaderboardPage() {
   const session = await getServerSession(authOptions)
@@ -26,7 +26,7 @@ export default async function LeaderboardPage() {
             </div>
             <span>Leaderboard</span>
           </div>
-          
+
           <UserDropdown />
         </div>
       </nav>
@@ -35,7 +35,7 @@ export default async function LeaderboardPage() {
         <div className="apple-fade-in">
           <Leaderboard />
         </div>
-        
+
         {/* Twitter Footer Link */}
         <TwitterFooterLink />
       </div>

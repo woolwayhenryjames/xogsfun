@@ -1,4 +1,4 @@
-export const runtime = 'edge'
+// Removed for Prisma compatibility
 export const dynamic = 'force-dynamic'
 import NextAuth from 'next-auth';
 import { authOptions } from '@/lib/auth';

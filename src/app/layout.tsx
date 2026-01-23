@@ -2,9 +2,12 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Providers } from './providers';
 import { Toaster } from 'react-hot-toast';
-// import PWAInstaller from '@/components/PWAInstaller';
-// import PWAInstallButton from '@/components/PWAInstallButton';
-// import PWAStatus from '@/components/PWAStatus';
+
+// Force dynamic rendering to avoid SessionProvider prerendering issues
+export const dynamic = 'force-dynamic';
+// import PWAInstaller from '../components/PWAInstaller';
+// import PWAInstallButton from '../components/PWAInstallButton';
+// import PWAStatus from '../components/PWAStatus';
 
 const inter = { className: 'font-sans' };
 
@@ -104,7 +107,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         {/* End Google Tag Manager */}
-        
+
         {/* Google Analytics (gtag.js) */}
         <script
           async

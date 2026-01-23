@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
-import { useLocale, locales, type Locale } from '@/lib/i18n';
-import { cn } from '@/lib/utils';
+import { useLocale, locales, type Locale } from '../lib/i18n';
+import { cn } from '../lib/utils';
 
 export function LanguageSwitcher() {
   const { locale, changeLocale } = useLocale();
@@ -39,11 +39,11 @@ export function LanguageSwitcher() {
         <span className="text-xs font-medium text-gray-600">
           {locales[locale]}
         </span>
-        <ChevronDown 
+        <ChevronDown
           className={cn(
             "w-3 h-3 text-gray-400 transition-transform duration-200",
             isOpen && "transform rotate-180"
-          )} 
+          )}
         />
       </button>
 

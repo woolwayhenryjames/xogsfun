@@ -1,12 +1,12 @@
-export const runtime = 'edge'
+// Removed for build compatibility
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from "@/lib/auth";
-import { InviteSystem } from '@/components/InviteSystem'
-import { BottomNavigation } from '@/components/BottomNavigation'
-import { TwitterFooterLink } from '@/components/TwitterFooterLink'
-import { XLogoMinimal } from '@/components/XLogo'
-import { UserDropdown } from '@/components/UserDropdown'
+import { InviteSystem } from '../../components/InviteSystem'
+import { BottomNavigation } from '../../components/BottomNavigation'
+import { TwitterFooterLink } from '../../components/TwitterFooterLink'
+import { XLogoMinimal } from '../../components/XLogo'
+import { UserDropdown } from '../../components/UserDropdown'
 
 
 export default async function InvitePage() {
@@ -25,7 +25,7 @@ export default async function InvitePage() {
             <XLogoMinimal className="w-10 h-10" />
             <span>Invite</span>
           </div>
-          
+
           <div className="flex items-center space-x-3">
             <UserDropdown />
           </div>
@@ -37,7 +37,7 @@ export default async function InvitePage() {
           <h2 className="apple-heading mb-8">Invite Friends</h2>
           <InviteSystem />
         </div>
-        
+
         {/* Twitter Footer Link */}
         <TwitterFooterLink />
       </div>

@@ -5,10 +5,10 @@ import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import { Calendar, Check, Gift, Users, MessageCircle, Star, Trophy, Zap, Clock, CheckCircle, XCircle, Twitter, Send, Target, Award, Activity, TrendingUp, Coins, User, Bot, Sparkles, ExternalLink, RefreshCw, AlertTriangle, Info, Plus, Rocket } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { BottomNavigation } from '@/components/BottomNavigation';
-import { UserDropdown } from '@/components/UserDropdown';
-import { TwitterSignInButton } from '@/components/TwitterSignInButton';
-import { TwitterFooterLink } from '@/components/TwitterFooterLink';
+import { BottomNavigation } from '../../components/BottomNavigation';
+import { UserDropdown } from '../../components/UserDropdown';
+import { TwitterSignInButton } from '../../components/TwitterSignInButton';
+import { TwitterFooterLink } from '../../components/TwitterFooterLink';
 
 interface Task {
   id: string;
@@ -87,12 +87,12 @@ export default function TaskPage() {
     const tomorrow = new Date(now);
     tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
     tomorrow.setUTCHours(0, 0, 0, 0);
-    
+
     const diff = tomorrow.getTime() - now.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
+
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
@@ -199,7 +199,7 @@ export default function TaskPage() {
             },
           });
         }
-        
+
         // 刷新数据
         fetchUserTasks();
         fetchTaskStats();
@@ -234,20 +234,20 @@ export default function TaskPage() {
 
   const getTaskStatus = (task: Task, userTask?: UserTaskRecord) => {
     if (!userTask) return 'available';
-    
+
     // 对于可重复任务，需要检查冷却时间
     if (task.isRepeatable && userTask.status === 'claimed' && userTask.claimedAt) {
       const claimedDate = new Date(userTask.claimedAt);
       const now = new Date();
       const cooldownMs = task.cooldownHours * 60 * 60 * 1000;
       const timePassed = now.getTime() - claimedDate.getTime();
-      
+
       // 如果已经过了冷却时间，任务重新变为可用
       if (timePassed >= cooldownMs) {
         return 'available';
       }
     }
-    
+
     return userTask.status;
   };
 
@@ -269,7 +269,7 @@ export default function TaskPage() {
     return 'from-orange-500 to-red-500';
   };
 
-  const filteredTasks = tasks.filter(task => 
+  const filteredTasks = tasks.filter(task =>
     selectedCategory === 'all' || task.category === selectedCategory
   );
 
@@ -278,15 +278,15 @@ export default function TaskPage() {
     if (ut.taskId !== 'daily-checkin' || ut.status !== 'claimed' || !ut.claimedAt) {
       return false;
     }
-    
+
     // 获取UTC日期进行比较，与后端保持一致
     const claimedDate = new Date(ut.claimedAt);
     const todayUTC = new Date();
-    
+
     // 转换为UTC日期字符串进行比较
     const claimedDateUTC = claimedDate.toISOString().split('T')[0];
     const todayDateUTC = todayUTC.toISOString().split('T')[0];
-    
+
     return claimedDateUTC === todayDateUTC;
   });
 
@@ -412,11 +412,10 @@ export default function TaskPage() {
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key as any)}
-                  className={`flex-1 flex items-center justify-center py-3 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
-                    activeTab === tab.key
+                  className={`flex-1 flex items-center justify-center py-3 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${activeTab === tab.key
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                       : 'text-gray-600 hover:text-blue-600 hover:bg-white/60'
-                  }`}
+                    }`}
                 >
                   <IconComponent className={`w-4 h-4 mr-2 ${activeTab === tab.key ? 'animate-pulse' : ''}`} />
                   <span className="text-sm font-medium">{tab.label}</span>
@@ -431,30 +430,29 @@ export default function TaskPage() {
           <div className="space-y-6">
             {/* Enhanced Category Filter - 暂时隐藏 */}
             {false && (
-            <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-100/50 p-4">
-              <div className="flex gap-2 justify-center flex-wrap">
-                {[
-                  { key: 'all', label: 'All Tasks', icon: '🌟' },
-                  { key: 'daily', label: 'Daily Check-in', icon: '📅' },
-                  { key: 'social', label: 'Social Tasks', icon: '🐦' },
-                  { key: 'engagement', label: 'Engagement', icon: '💬' },
-                  { key: 'special', label: 'Special Events', icon: '🎉' },
-                ].map((category) => (
-                  <button
-                    key={category.key}
-                    onClick={() => setSelectedCategory(category.key as any)}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-                      selectedCategory === category.key
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    <span>{category.icon}</span>
-                    <span className="text-sm">{category.label}</span>
-                  </button>
-                ))}
+              <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-100/50 p-4">
+                <div className="flex gap-2 justify-center flex-wrap">
+                  {[
+                    { key: 'all', label: 'All Tasks', icon: '🌟' },
+                    { key: 'daily', label: 'Daily Check-in', icon: '📅' },
+                    { key: 'social', label: 'Social Tasks', icon: '🐦' },
+                    { key: 'engagement', label: 'Engagement', icon: '💬' },
+                    { key: 'special', label: 'Special Events', icon: '🎉' },
+                  ].map((category) => (
+                    <button
+                      key={category.key}
+                      onClick={() => setSelectedCategory(category.key as any)}
+                      className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${selectedCategory === category.key
+                          ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                    >
+                      <span>{category.icon}</span>
+                      <span className="text-sm">{category.label}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
             )}
 
             {/* 任务分类说明 */}
@@ -465,68 +463,67 @@ export default function TaskPage() {
                     <Info className="w-6 h-6 text-white" />
                   </div>
                   <div className="flex-1">
-                                         <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
-                       <Calendar className="w-5 h-5 text-blue-600" />
-                       Daily Check-in Rules
-                     </h3>
-                     <div className="space-y-2 text-sm text-gray-700">
-                       <div className="flex items-start gap-2">
-                         <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 flex-shrink-0"></div>
-                         <span><strong>Reset Time:</strong> Daily at UTC 0:00 (8:00 AM Beijing Time)</span>
-                       </div>
-                       <div className="flex items-start gap-2">
-                         <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5 flex-shrink-0"></div>
-                         <span><strong>Reward Calculation:</strong> AI Score × Random Multiplier (1.00-3.00)</span>
-                       </div>
-                       <div className="flex items-start gap-2">
-                         <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 flex-shrink-0"></div>
-                         <span><strong>Streak:</strong> Accumulate consecutive days, restart after interruption</span>
-                       </div>
-                       <div className="flex items-start gap-2">
-                         <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 flex-shrink-0"></div>
-                         <span><strong>Minimum Reward:</strong> Guaranteed at least 1 $XOGS token</span>
-                       </div>
-                     </div>
-                     
-                                            {/* Today's Status */}
-                       <div className="mt-4 p-3 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-200/50">
-                         <div className="flex items-center justify-between">
-                           <div className="flex items-center gap-2">
-                             <div className={`w-2 h-2 rounded-full ${todayCheckedIn ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`}></div>
-                             <span className="text-sm font-medium text-gray-800">Today's Status</span>
-                           </div>
-                           <div className={`px-3 py-1 rounded-lg text-sm font-medium ${
-                             todayCheckedIn 
-                               ? 'bg-green-100 text-green-700' 
-                               : 'bg-orange-100 text-orange-700'
-                           }`}>
-                             {todayCheckedIn ? '✅ Checked In' : '⏳ Not Checked'}
-                           </div>
-                         </div>
-                       </div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                      <Calendar className="w-5 h-5 text-blue-600" />
+                      Daily Check-in Rules
+                    </h3>
+                    <div className="space-y-2 text-sm text-gray-700">
+                      <div className="flex items-start gap-2">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 flex-shrink-0"></div>
+                        <span><strong>Reset Time:</strong> Daily at UTC 0:00 (8:00 AM Beijing Time)</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5 flex-shrink-0"></div>
+                        <span><strong>Reward Calculation:</strong> AI Score × Random Multiplier (1.00-3.00)</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 flex-shrink-0"></div>
+                        <span><strong>Streak:</strong> Accumulate consecutive days, restart after interruption</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 flex-shrink-0"></div>
+                        <span><strong>Minimum Reward:</strong> Guaranteed at least 1 $XOGS token</span>
+                      </div>
+                    </div>
 
-                                            {/* Countdown Timer */}
-                       <div className="mt-2 p-3 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-200/50">
-                         <div className="flex items-center justify-between">
-                           <div className="flex items-center gap-2">
-                             <Clock className="w-4 h-4 text-indigo-600" />
-                             <span className="text-sm font-medium text-indigo-800">Time Until Reset</span>
-                           </div>
-                           <div className="bg-white px-3 py-1 rounded-lg shadow-sm">
-                             <span className="text-lg font-bold text-indigo-700 font-mono">
-                               {timeUntilReset}
-                             </span>
-                           </div>
-                         </div>
-                       </div>
+                    {/* Today's Status */}
+                    <div className="mt-4 p-3 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-200/50">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${todayCheckedIn ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`}></div>
+                          <span className="text-sm font-medium text-gray-800">Today's Status</span>
+                        </div>
+                        <div className={`px-3 py-1 rounded-lg text-sm font-medium ${todayCheckedIn
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-orange-100 text-orange-700'
+                          }`}>
+                          {todayCheckedIn ? '✅ Checked In' : '⏳ Not Checked'}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Countdown Timer */}
+                    <div className="mt-2 p-3 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-200/50">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-4 h-4 text-indigo-600" />
+                          <span className="text-sm font-medium text-indigo-800">Time Until Reset</span>
+                        </div>
+                        <div className="bg-white px-3 py-1 rounded-lg shadow-sm">
+                          <span className="text-lg font-bold text-indigo-700 font-mono">
+                            {timeUntilReset}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             ) : null}
 
             {/* 社交任务说明 */}
-            {(selectedCategory === 'social' || selectedCategory === 'all') && 
-             session?.user?.platformId && [10000, 10001].includes(session.user.platformId) ? (
+            {(selectedCategory === 'social' || selectedCategory === 'all') &&
+              session?.user?.platformId && [10000, 10001].includes(session.user.platformId) ? (
               <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-3xl shadow-lg border border-blue-200/50 p-6">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg flex-shrink-0">
@@ -553,9 +550,9 @@ export default function TaskPage() {
                       <div className="flex items-start gap-2">
                         <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 flex-shrink-0"></div>
                         <span><strong>Requirements:</strong> Active Twitter account connection required</span>
-              </div>
-            </div>
-                    
+                      </div>
+                    </div>
+
                     {/* 重要提示 */}
                     <div className="mt-4 p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl border border-yellow-200/50">
                       <div className="flex items-start gap-2">
@@ -563,7 +560,7 @@ export default function TaskPage() {
                         <div>
                           <p className="text-sm font-medium text-orange-800">Important Notice</p>
                           <p className="text-xs text-orange-700 mt-1">
-                            Make sure you have connected your Twitter account and follow @xogsfun before attempting verification. 
+                            Make sure you have connected your Twitter account and follow @xogsfun before attempting verification.
                             The verification process may take a few seconds to check your following status.
                           </p>
                         </div>
@@ -578,17 +575,17 @@ export default function TaskPage() {
             <div className="space-y-4">
               {filteredTasks.map((task) => {
                 // 对于可重复任务，取最新的记录
-                const userTask = task.isRepeatable 
-                  ? userTasks.filter(ut => ut.taskId === task.id).sort((a, b) => 
-                      new Date(b.completedAt || b.claimedAt || '').getTime() - 
-                      new Date(a.completedAt || a.claimedAt || '').getTime()
-                    )[0]
+                const userTask = task.isRepeatable
+                  ? userTasks.filter(ut => ut.taskId === task.id).sort((a, b) =>
+                    new Date(b.completedAt || b.claimedAt || '').getTime() -
+                    new Date(a.completedAt || a.claimedAt || '').getTime()
+                  )[0]
                   : userTasks.find(ut => ut.taskId === task.id);
-                  
+
                 // 对于签到任务，使用特殊的状态判断逻辑，并找到今天的任务记录
                 let status;
                 let todayUserTask = userTask;
-                
+
                 if (task.id === 'daily-checkin') {
                   status = todayCheckedIn ? 'claimed' : 'available';
                   // 如果今天已签到，找到今天的任务记录用于显示奖励
@@ -607,7 +604,7 @@ export default function TaskPage() {
                 } else {
                   status = getTaskStatus(task, userTask);
                 }
-                
+
                 return (
                   <div key={task.id} className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-100/50 p-6 hover:shadow-2xl transition-all duration-300">
                     <div className="flex items-start justify-between mb-4">
@@ -638,14 +635,13 @@ export default function TaskPage() {
                           {task.id === 'daily-checkin' ? '0.2x-1x × AI Score' : `${task.reward} $XOGS`}
                         </span>
                       </div>
-                      
+
                       {/* 任务标签 */}
                       <div className="flex items-center space-x-2">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          task.difficulty === 'easy' ? 'bg-green-100 text-green-800' :
-                          task.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${task.difficulty === 'easy' ? 'bg-green-100 text-green-800' :
+                            task.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-red-100 text-red-800'
+                          }`}>
                           {task.difficulty}
                         </span>
                         {task.isRepeatable && (
@@ -668,7 +664,7 @@ export default function TaskPage() {
                           <span className="text-sm">Visit @xogsfun</span>
                         </button>
                       )}
-                      
+
                       {status === 'available' && (
                         <button
                           onClick={() => handleTaskAction(task.id, 'complete')}
@@ -742,7 +738,7 @@ export default function TaskPage() {
                     <Sparkles className="w-4 h-4 text-purple-600" />
                     <span className="text-sm font-medium text-gray-700">Stay tuned for updates</span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <span className="px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800">
                       Coming Soon
@@ -789,7 +785,7 @@ export default function TaskPage() {
                   <RefreshCw className="h-5 w-5" />
                 </button>
               </div>
-              
+
               {userTasks.length === 0 ? (
                 <div className="text-center py-16">
                   <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 flex items-center justify-center">
@@ -819,11 +815,10 @@ export default function TaskPage() {
                             <Coins className="h-3 w-3" />
                             <span className="text-sm font-bold">+{userTask.reward}</span>
                           </div>
-                          <div className={`text-xs px-2 py-1 rounded-full font-medium ${
-                            userTask.status === 'claimed' 
-                              ? 'bg-green-100 text-green-800' 
+                          <div className={`text-xs px-2 py-1 rounded-full font-medium ${userTask.status === 'claimed'
+                              ? 'bg-green-100 text-green-800'
                               : 'bg-blue-100 text-blue-800'
-                          }`}>
+                            }`}>
                             {userTask.status}
                           </div>
                         </div>
@@ -870,7 +865,7 @@ export default function TaskPage() {
                       <span className="text-gray-600">Completion Rate</span>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500"
                             style={{ width: `${taskStats.totalTasks > 0 ? (taskStats.completedTasks / taskStats.totalTasks) * 100 : 0}%` }}
                           ></div>
@@ -912,7 +907,7 @@ export default function TaskPage() {
             </div>
           </div>
         )}
-        
+
         {/* Twitter Footer Link */}
         <TwitterFooterLink />
       </div>

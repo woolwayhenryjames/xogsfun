@@ -1,15 +1,18 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     domains: ['avatars.githubusercontent.com', 'pbs.twimg.com'],
   },
   experimental: {
-    serverComponentsExternalPackages: ['@prisma/client'],
+    serverComponentsExternalPackages: ['@prisma/client', 'next-auth', 'openid-client'],
   },
   webpack: (config, { webpack }) => {
     // Use aliases for polyfills instead of externals
     config.resolve.alias = {
       ...config.resolve.alias,
+      '@': path.join(__dirname, 'src'),
       crypto: require.resolve('crypto-browserify'),
       'node:crypto': require.resolve('crypto-browserify'),
       stream: require.resolve('stream-browserify'),

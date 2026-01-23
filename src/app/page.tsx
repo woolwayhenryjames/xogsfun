@@ -1,15 +1,15 @@
 'use client';
 
 import { Coins, Gift, Zap, AlertTriangle } from 'lucide-react';
-import { TwitterSignInButton } from '@/components/TwitterSignInButton';
-import { BottomNavigation } from '@/components/BottomNavigation';
+import { TwitterSignInButton } from '../components/TwitterSignInButton';
+import { BottomNavigation } from '../components/BottomNavigation';
 import { useSession } from 'next-auth/react';
-import { UserDropdown } from '@/components/UserDropdown';
-import { CollapsibleSection } from '@/components/CollapsibleSection';
-import { XLogoMinimal, XLogo, XLogoHero } from '@/components/XLogo';
-import { WithdrawButton } from '@/components/WithdrawButton';
-import { TwitterFooterLink } from '@/components/TwitterFooterLink';
-import { SponsorCard } from '@/components/SponsorCard';
+import { UserDropdown } from '../components/UserDropdown';
+import { CollapsibleSection } from '../components/CollapsibleSection';
+import { XLogoMinimal, XLogo, XLogoHero } from '../components/XLogo';
+import { WithdrawButton } from '../components/WithdrawButton';
+import { TwitterFooterLink } from '../components/TwitterFooterLink';
+import { SponsorCard } from '../components/SponsorCard';
 
 import { useTranslator } from '@/lib/i18n';
 import { useState, useEffect } from 'react';
@@ -31,19 +31,19 @@ export default function HomePage() {
   useEffect(() => {
     const fetchUserData = async () => {
       if (!session?.user?.id) return;
-      
+
       try {
         setIsLoadingUserData(true);
-        
+
         // 1. 首先获取用户数据
         const response = await fetch('/api/user');
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
         }
-              } catch (error) {
-          // Silently handle error
-        } finally {
+      } catch (error) {
+        // Silently handle error
+      } finally {
         setIsLoadingUserData(false);
       }
     };
@@ -98,15 +98,15 @@ export default function HomePage() {
           </div>
         </div>
 
-                  {/* Hero area - Apple style */}
+        {/* Hero area - Apple style */}
         <div className="text-center mb-16 apple-slide-up">
           <div className="w-24 h-24 mx-auto mb-8 apple-pulse">
             <XLogoMinimal className="w-full h-full" textSize="text-3xl" />
           </div>
-          
+
           <div className="space-y-4">
             {!session?.user ? (
-              <TwitterSignInButton 
+              <TwitterSignInButton
                 className="apple-button w-full py-3 text-base"
                 text={t('auth.connectTwitter')}
               />
@@ -114,7 +114,7 @@ export default function HomePage() {
           </div>
         </div>
 
-                  {/* Token Balance Card - display real data or description */}
+        {/* Token Balance Card - display real data or description */}
         <div className="apple-score-card mb-16 apple-scale-in apple-float apple-shadow-lg bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
           {isLoadingUserData || (session?.user && !userData) ? (
             <div className="text-center py-8">
@@ -128,20 +128,20 @@ export default function HomePage() {
                 <div className="apple-score-number text-yellow-600">
                   {(displayXogsBalance || 0).toLocaleString()}
                 </div>
-                                    <span className="text-2xl font-bold text-yellow-600 ml-1">$XOGS</span>
+                <span className="text-2xl font-bold text-yellow-600 ml-1">$XOGS</span>
               </div>
               <div className="apple-score-label text-yellow-800">
-                                  My $XOGS Allocation
+                My $XOGS Allocation
               </div>
               <p className="text-sm opacity-75 mt-3 text-yellow-700">
                 CryptoTwitter AI Score: {displayAiScore || 0}
               </p>
               {/* 按钮区域 */}
               <div className="mt-4 flex items-center justify-center gap-3">
-                <WithdrawButton 
+                <WithdrawButton
                   className="text-xs"
                 />
-                <a 
+                <a
                   href="/xogs"
                   className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-orange-700 bg-orange-100 hover:bg-orange-200 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
                 >
@@ -171,7 +171,7 @@ export default function HomePage() {
           <div className="mb-8 apple-slide-up">
             <div className="grid grid-cols-1 gap-4 mb-4">
               {/* TASK 入口 */}
-              <a 
+              <a
                 href="/task"
                 className="group bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
@@ -195,7 +195,7 @@ export default function HomePage() {
 
               {/* AI Tweet 入口 - Temporarily hidden */}
               {false && (
-                <a 
+                <a
                   href="/infofi"
                   className="group bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
@@ -213,7 +213,7 @@ export default function HomePage() {
                 </a>
               )}
             </div>
-            
+
             {/* Solana Wallet Entry - Hidden for testing */}
             {/* <div className="grid grid-cols-1 gap-4">
               <a 
@@ -255,7 +255,7 @@ export default function HomePage() {
                   XOGS is a sophisticated AI-powered platform that evaluates Twitter accounts within the crypto ecosystem. Our advanced algorithms analyze engagement quality, follower authenticity, content relevance, and community influence to generate comprehensive crypto-focused Twitter scores.
                 </p>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
                   <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
@@ -265,7 +265,7 @@ export default function HomePage() {
                     Specialized machine learning models trained on crypto Twitter data to evaluate account credibility, community engagement, and influence within the cryptocurrency space.
                   </p>
                 </div>
-                
+
                 <div className="bg-green-50 rounded-xl p-4 border border-green-200">
                   <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
                     ⚡ Solana Blockchain Integration
@@ -275,14 +275,14 @@ export default function HomePage() {
                   </p>
                 </div>
               </div>
-              
+
               <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl p-4 border border-orange-200">
                 <h4 className="font-semibold text-orange-900 mb-2">🪙 $XOGS Token Rewards</h4>
                 <p className="text-orange-800 text-sm leading-relaxed">
                   Earn $XOGS tokens based on your CryptoTwitter influence score. Higher-quality crypto Twitter accounts receive larger token allocations. Tokens can be used for platform governance and premium features.
                 </p>
               </div>
-              
+
               <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
                 <h4 className="font-semibold text-gray-900 mb-2">How CryptoTwitter Scoring Works:</h4>
                 <div className="grid grid-cols-2 gap-2 text-xs">
@@ -308,7 +308,7 @@ export default function HomePage() {
           </CollapsibleSection>
         </div>
 
-                  {/* Token Acquisition Rules - Collapsible */}
+        {/* Token Acquisition Rules - Collapsible */}
         <div className="mb-8 apple-slide-up">
           <CollapsibleSection
             title={t('home.tokenAcquisition')}
@@ -324,7 +324,7 @@ export default function HomePage() {
           </CollapsibleSection>
         </div>
 
-                  {/* Security Warning - Collapsible */}
+        {/* Security Warning - Collapsible */}
         <div className="mb-8 apple-slide-up">
           <CollapsibleSection
             title={t('home.securityWarning')}
@@ -350,7 +350,7 @@ export default function HomePage() {
         <TwitterFooterLink />
       </div>
 
-              {/* Apple-style fixed bottom navigation */}
+      {/* Apple-style fixed bottom navigation */}
       <BottomNavigation />
     </div>
   );

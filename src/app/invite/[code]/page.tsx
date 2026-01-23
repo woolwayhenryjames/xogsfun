@@ -1,4 +1,4 @@
-export const runtime = 'edge'
+// Removed for build compatibility
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { InvitePageClient } from './InvitePageClient';

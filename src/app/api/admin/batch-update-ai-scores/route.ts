@@ -1,4 +1,3 @@
-export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
@@ -10,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     // 验证管理员权限
     const { authorized, error, userId } = await adminMiddleware();
-    
+
     if (!authorized) {
       return NextResponse.json({ error }, { status: error === '未登录' ? 401 : 403 });
     }
@@ -30,7 +29,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('批量更新AI评分失败:', error);
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: '服务器错误',
       message: '批量更新AI评分失败'
     }, { status: 500 });
@@ -41,7 +40,7 @@ export async function GET(request: NextRequest) {
   try {
     // 验证管理员权限
     const { authorized, error, userId } = await adminMiddleware();
-    
+
     if (!authorized) {
       return NextResponse.json({ error }, { status: error === '未登录' ? 401 : 403 });
     }
@@ -77,7 +76,7 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('获取AI评分统计失败:', error);
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: '服务器错误',
       message: '获取统计信息失败'
     }, { status: 500 });

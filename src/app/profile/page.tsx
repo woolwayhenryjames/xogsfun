@@ -1,4 +1,4 @@
-export const runtime = 'edge'
+// Removed for build compatibility
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from "@/lib/auth";

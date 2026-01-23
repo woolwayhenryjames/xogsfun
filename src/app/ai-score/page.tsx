@@ -1,12 +1,12 @@
-export const runtime = 'edge'
+// Removed for build compatibility
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from "@/lib/auth";
-import { BottomNavigation } from '@/components/BottomNavigation'
-import { TwitterFooterLink } from '@/components/TwitterFooterLink'
+import { BottomNavigation } from '../../components/BottomNavigation'
+import { TwitterFooterLink } from '../../components/TwitterFooterLink'
 import { Calculator } from 'lucide-react'
-import { UserDropdown } from '@/components/UserDropdown'
-import AIScoreCalculator from '@/components/AIScoreCalculator'
+import { UserDropdown } from '../../components/UserDropdown'
+import AIScoreCalculator from '../../components/AIScoreCalculator'
 
 export default async function AIScorePage() {
   const session = await getServerSession(authOptions)
@@ -26,7 +26,7 @@ export default async function AIScorePage() {
             </div>
             <span>AI Score</span>
           </div>
-          
+
           <UserDropdown />
         </div>
       </nav>
@@ -35,7 +35,7 @@ export default async function AIScorePage() {
         <div className="apple-fade-in">
           <AIScoreCalculator />
         </div>
-        
+
         {/* Twitter Footer Link */}
         <TwitterFooterLink />
       </div>

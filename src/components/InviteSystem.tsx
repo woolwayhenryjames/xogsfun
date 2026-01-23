@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Avatar } from './Avatar';
 import { Gift, Share2, Copy, Users, Award, Calendar, Sparkles, BookOpen } from 'lucide-react';
-import { useTranslator } from '@/lib/i18n';
+import { useTranslator } from '../lib/i18n';
 import { CollapsibleSection } from './CollapsibleSection';
 
 interface ExtendedUser {
@@ -69,7 +69,7 @@ export function InviteSystem() {
         method: 'POST',
       });
       const data = await response.json();
-      
+
       if (response.ok) {
         setInviteData(prev => prev ? { ...prev, inviteCode: data.inviteCode, inviteLink: data.inviteLink } : null);
         toast.success(t('invite.codeGenerated'));
@@ -93,7 +93,7 @@ export function InviteSystem() {
   const shareInviteLink = () => {
     if (inviteData?.inviteLink) {
       const text = `Join Xogs.Fun and discover your Twitter account value! Register using my invite link: ${inviteData.inviteLink}`;
-      
+
       // Open Twitter share directly with proper URL encoding
       const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(inviteData.inviteLink)}`;
       window.open(twitterUrl, '_blank', 'noopener,noreferrer');
@@ -163,18 +163,17 @@ export function InviteSystem() {
           ].map((tab) => {
             const IconComponent = tab.icon;
             return (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key as any)}
-                className={`flex-1 flex flex-col items-center justify-center py-4 px-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
-                activeTab === tab.key
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key as any)}
+                className={`flex-1 flex flex-col items-center justify-center py-4 px-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${activeTab === tab.key
                     ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/25'
                     : 'text-gray-600 hover:text-indigo-600 hover:bg-white/60'
-              }`}
-            >
+                  }`}
+              >
                 <IconComponent className={`w-5 h-5 mb-2 ${activeTab === tab.key ? 'animate-pulse' : ''}`} />
                 <span className="text-sm font-medium">{tab.label}</span>
-            </button>
+              </button>
             );
           })}
         </nav>
@@ -271,7 +270,7 @@ export function InviteSystem() {
                   <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative z-10 flex items-center justify-center space-x-3">
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
                     </svg>
                     <span>{t('invite.shareToTwitter')}</span>
                   </div>
@@ -296,7 +295,7 @@ export function InviteSystem() {
                         <span className="text-indigo-700 text-xs font-bold">{index + 1}</span>
                       </div>
                       <span className="leading-relaxed">{rule}</span>
-                  </li>
+                    </li>
                   ))}
                 </ul>
               </CollapsibleSection>
@@ -322,7 +321,7 @@ export function InviteSystem() {
           ) : (
             <div className="space-y-4">
               {inviteData.invitesSent.map((invite, index) => (
-                <div key={invite.id} className={`bg-gradient-to-r from-gray-50 to-green-50 rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] animate-in slide-in-from-right-5`} style={{animationDelay: `${index * 100}ms`}}>
+                <div key={invite.id} className={`bg-gradient-to-r from-gray-50 to-green-50 rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] animate-in slide-in-from-right-5`} style={{ animationDelay: `${index * 100}ms` }}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4 min-w-0 flex-1">
                       <Avatar
@@ -334,7 +333,7 @@ export function InviteSystem() {
                         <div className="font-semibold text-gray-900 truncate">{invite.invitee.name}</div>
                         <div className="text-sm text-gray-600 truncate flex items-center">
                           <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
                           </svg>
                           {invite.invitee.twitterUsername}
                         </div>

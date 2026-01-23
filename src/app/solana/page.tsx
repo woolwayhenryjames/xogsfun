@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react'
 import { getSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { BottomNavigation } from '@/components/BottomNavigation'
-import { UserDropdown } from '@/components/UserDropdown'
-import { SolanaWalletConnectSimple } from '@/components/SolanaWalletConnectSimple'
+import { BottomNavigation } from '../../components/BottomNavigation'
+import { UserDropdown } from '../../components/UserDropdown'
+import { SolanaWalletConnectSimple } from '../../components/SolanaWalletConnectSimple'
 import { Wallet, Coins, Info } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -18,46 +18,46 @@ export default function SolanaPage() {
     const checkSession = async () => {
       try {
         const currentSession = await getSession()
-        
+
         // 检查 URL 参数中是否有用户 ID (用于 Phantom 应用内)
         const urlParams = new URLSearchParams(window.location.search)
         const urlUserId = urlParams.get('userId')
         const isPhantomReturn = urlParams.get('phantom_return') === 'true'
         const error = urlParams.get('error')
         const isPhantomBrowser = /Phantom/.test(navigator.userAgent) || urlParams.get('phantom_browser') === 'true'
-        
-        console.log('Session check:', { 
-          currentSession: !!currentSession, 
-          urlUserId, 
+
+        console.log('Session check:', {
+          currentSession: !!currentSession,
+          urlUserId,
           isPhantomReturn,
           error,
           userAgent: navigator.userAgent
         })
-        
+
         // 处理错误情况
         if (error) {
           console.log('Connection error detected, redirecting to home page')
           window.location.href = '/'
           return
         }
-        
+
         if (currentSession?.user?.id) {
           // 用户已登录，正常流程
           setSession(currentSession)
-          
+
           // 保存用户信息到 localStorage，供 Phantom 应用内使用
           localStorage.setItem('userInfo', JSON.stringify({
             id: currentSession.user.id,
             name: currentSession.user.name,
             email: currentSession.user.email
           }))
-          
+
           await loadSavedAddress(currentSession.user.id)
           setLoading(false)
         } else if (urlUserId) {
           // 在 Phantom 应用内，通过 URL 参数获取用户 ID
           console.log('Using user ID from URL for Phantom app:', urlUserId)
-          
+
           // 创建临时会话对象
           const tempSession = {
             user: {
@@ -69,7 +69,7 @@ export default function SolanaPage() {
           setSession(tempSession)
           await loadSavedAddress(urlUserId)
           setLoading(false)
-          
+
           // 如果是从 Phantom 返回，显示提示
           if (isPhantomReturn) {
             console.log('Returned from Phantom, checking connection status...')
@@ -89,7 +89,7 @@ export default function SolanaPage() {
         return
       }
     }
-    
+
     checkSession()
   }, [])
 
@@ -98,11 +98,11 @@ export default function SolanaPage() {
       // 检查是否需要通过 URL 参数传递用户 ID
       const currentSession = await getSession()
       const needsUserId = !currentSession?.user?.id
-      
-      const url = needsUserId 
+
+      const url = needsUserId
         ? `/api/user/solana-address-flexible?userId=${userId}`
         : `/api/user/solana-address-flexible`
-        
+
       const response = await fetch(url)
       if (response.ok) {
         const data = await response.json()
@@ -126,13 +126,13 @@ export default function SolanaPage() {
     try {
       // 获取当前用户 ID
       const userId = session?.user?.id
-      
+
       // 检查 URL 参数中的用户 ID (用于 Phantom 应用内)
       const urlParams = new URLSearchParams(window.location.search)
       const urlUserId = urlParams.get('userId')
-      
+
       const targetUserId = userId || urlUserId
-      
+
       console.log('Wallet connect attempt:', { address, userId, urlUserId, targetUserId })
 
       if (!targetUserId) {
@@ -173,7 +173,7 @@ export default function SolanaPage() {
     // 清除保存的地址状态
     setSavedAddress('')
     console.log('Wallet address unlinked successfully')
-    
+
     // 可选：刷新页面状态以确保从数据库重新加载
     if (session?.user?.id) {
       loadSavedAddress(session.user.id)
@@ -208,7 +208,7 @@ export default function SolanaPage() {
                 <p className="text-xs text-gray-500">Connect & Earn</p>
               </div>
             </div>
-            
+
             <UserDropdown />
           </div>
         </div>
@@ -223,7 +223,7 @@ export default function SolanaPage() {
               <Coins className="w-12 h-12 text-white group-hover:rotate-12 transition-transform duration-500" />
             </div>
           </div>
-          
+
           <div className="space-y-4">
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-purple-800 to-indigo-800 bg-clip-text text-transparent mb-3 hover:scale-105 transition-transform duration-300 cursor-default">
               Connect Solana Wallet
@@ -231,9 +231,9 @@ export default function SolanaPage() {
             <p className="text-gray-600 text-lg leading-relaxed">
               Bind your wallet to receive <span className="font-semibold text-purple-600">$XOGS tokens</span>
             </p>
-            
 
-            
+
+
 
           </div>
         </div>
@@ -243,7 +243,7 @@ export default function SolanaPage() {
         {/* Main Wallet Connection Section */}
         <div className="bg-white rounded-3xl shadow-2xl shadow-gray-500/10 border border-gray-200/50 overflow-hidden hover:shadow-2xl hover:shadow-gray-500/20 transition-all duration-500">
           <div className="p-6">
-            <SolanaWalletConnectSimple 
+            <SolanaWalletConnectSimple
               onConnect={handleWalletConnect}
               savedAddress={savedAddress}
               onUnlink={handleWalletUnlink}
@@ -267,7 +267,7 @@ export default function SolanaPage() {
                   <p>• Official launch will be announced on our verified channels</p>
                   <p>• Only connect your wallet for future token distribution</p>
                 </div>
-                
+
                 <div className="border-t border-red-200 pt-3 mt-3">
                   <h4 className="font-bold text-red-800 text-sm mb-2">SYSTEM STATUS</h4>
                   <div className="text-red-700 text-sm space-y-1">

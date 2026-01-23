@@ -3,14 +3,14 @@
 import { signIn } from 'next-auth/react';
 import { Twitter, Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '../lib/utils';
 
 interface TwitterSignInButtonProps {
   className?: string;
   text?: string;
 }
 
-export function TwitterSignInButton({ 
+export function TwitterSignInButton({
   className,
   text = "Sign in with Twitter"
 }: TwitterSignInButtonProps) {

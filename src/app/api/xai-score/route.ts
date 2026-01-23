@@ -1,4 +1,4 @@
-export const runtime = 'edge'
+// Removed for Prisma compatibility
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';

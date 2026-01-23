@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from '../lib/utils';
 import { User } from 'lucide-react';
 import { useState } from 'react';
 
@@ -32,21 +32,21 @@ const textSizes = {
   xl: 'text-xl'
 };
 
-export function Avatar({ 
-  src, 
-  name, 
-  size = 'md', 
-  className 
+export function Avatar({
+  src,
+  name,
+  size = 'md',
+  className
 }: AvatarProps) {
   const [imageError, setImageError] = useState(false);
-  
+
   const initials = name
     ? name
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2)
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
     : '';
 
   const handleImageError = () => {

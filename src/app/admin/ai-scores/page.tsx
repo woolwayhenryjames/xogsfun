@@ -1,10 +1,10 @@
-export const runtime = 'edge'
+// Removed for build compatibility
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from "@/lib/auth";
 import { Settings, AlertTriangle } from 'lucide-react'
-import { UserDropdown } from '@/components/UserDropdown'
-import AdminAIScoreManager from '@/components/AdminAIScoreManager'
+import { UserDropdown } from '../../../components/UserDropdown'
+import AdminAIScoreManager from '../../../components/AdminAIScoreManager'
 import { requireAdmin } from '@/lib/admin'
 
 export default async function AdminAIScoresPage() {
@@ -16,7 +16,7 @@ export default async function AdminAIScoresPage() {
 
   // 验证管理员权限
   const { isAdmin, platformId } = await requireAdmin()
-  
+
   if (!isAdmin) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 apple-fade-in">
@@ -29,7 +29,7 @@ export default async function AdminAIScoresPage() {
               </div>
               <span>Access Denied</span>
             </div>
-            
+
             <UserDropdown />
           </div>
         </nav>
@@ -46,7 +46,7 @@ export default async function AdminAIScoresPage() {
             <p className="text-sm text-gray-500 mb-6">
               您的平台ID: {platformId || '未知'}
             </p>
-            <a 
+            <a
               href="/"
               className="apple-button inline-block"
             >
@@ -69,7 +69,7 @@ export default async function AdminAIScoresPage() {
             </div>
             <span>Admin</span>
           </div>
-          
+
           <UserDropdown />
         </div>
       </nav>

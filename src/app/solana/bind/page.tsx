@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { PublicKey } from '@solana/web3.js'
 import { Wallet, Check, AlertCircle, Loader2 } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
-import { Avatar } from '@/components/Avatar'
+import { Avatar } from '../../../components/Avatar'
 
 // 解密函数（与主组件保持一致）
 const decryptUserId = (encryptedUserId: string): string => {
@@ -12,27 +12,27 @@ const decryptUserId = (encryptedUserId: string): string => {
     const key = 'xogs_phantom_key_2024';
     const encrypted = atob(encryptedUserId);
     let decrypted = '';
-    
+
     for (let i = 0; i < encrypted.length; i++) {
       decrypted += String.fromCharCode(encrypted.charCodeAt(i) ^ key.charCodeAt(i % key.length));
     }
-    
+
     // 分离用户ID和时间戳
     const parts = decrypted.split(':');
     if (parts.length !== 2) {
       console.error('Invalid encrypted format');
       return '';
     }
-    
+
     const [userId, encryptedTimestamp] = parts;
     const timestampAge = Date.now() - parseInt(encryptedTimestamp);
-    
+
     // 验证加密时间戳（防止重放攻击）
     if (timestampAge > 3600000) { // 1小时过期
       console.error('Encrypted payload expired');
       return '';
     }
-    
+
     return userId;
   } catch (e) {
     console.error('Failed to decrypt user ID:', e);
@@ -46,7 +46,7 @@ export default function SolanaBindPage() {
   const [walletAddress, setWalletAddress] = useState<string>('')
   const [userId, setUserId] = useState<string>('')
   const [isValidating, setIsValidating] = useState(true)
-  const [userInfo, setUserInfo] = useState<{username: string, name: string, image: string} | null>(null)
+  const [userInfo, setUserInfo] = useState<{ username: string, name: string, image: string } | null>(null)
   const [hasTriedConnection, setHasTriedConnection] = useState(false)
 
   // 获取 Phantom provider
@@ -111,10 +111,10 @@ export default function SolanaBindPage() {
       }
 
       setUserId(decryptedUserId);
-      
+
       // 获取用户信息
       fetchUserInfo(decryptedUserId);
-      
+
       setIsValidating(false);
     };
 
@@ -125,7 +125,7 @@ export default function SolanaBindPage() {
   const fetchUserInfo = async (userId: string) => {
     try {
       const response = await fetch(`/api/user/info?userId=${userId}`);
-      
+
       if (response.ok) {
         const data = await response.json();
         setUserInfo({
@@ -161,17 +161,17 @@ export default function SolanaBindPage() {
 
     try {
       console.log('开始连接 Phantom 钱包...');
-      
+
       // 连接钱包
       const response = await provider.connect();
       const publicKey = response.publicKey.toString();
-      
+
       console.log('钱包连接成功:', publicKey);
       setWalletAddress(publicKey);
 
       // 调用绑定API
       console.log('开始绑定地址到用户:', { publicKey, userId });
-      
+
       const bindResponse = await fetch('/api/user/bind-solana-direct', {
         method: 'POST',
         headers: {
@@ -186,19 +186,19 @@ export default function SolanaBindPage() {
       if (bindResponse.ok) {
         const result = await bindResponse.json();
         console.log('地址绑定成功:', result);
-        
+
         setConnectionStatus('connected');
         toast.success('🎉 Wallet connected and address bound successfully!');
-        
+
       } else {
         const error = await bindResponse.json();
         throw new Error(error.error || 'Failed to bind address');
       }
-      
+
     } catch (error: any) {
       console.error('连接或绑定失败:', error);
       setConnectionStatus('error');
-      
+
       if (error.code === 4001) {
         toast.error('User rejected the connection');
       } else if (hasTriedConnection) {
@@ -236,7 +236,7 @@ export default function SolanaBindPage() {
             <h3 className="text-2xl font-bold text-green-800 mb-3">
               Binding Successful!
             </h3>
-            
+
             {/* 用户信息 */}
             {userInfo && (
               <div className="flex items-center justify-center gap-3 mb-4">
@@ -252,7 +252,7 @@ export default function SolanaBindPage() {
                 </div>
               </div>
             )}
-            
+
             <div className="bg-white/70 rounded-2xl p-4 mb-4">
               <p className="text-green-700 font-mono text-sm font-medium break-all">
                 {walletAddress.slice(0, 6)}...{walletAddress.slice(-6)}
@@ -302,7 +302,7 @@ export default function SolanaBindPage() {
               </div>
             </div>
           )}
-          
+
           <div className="flex items-center justify-center gap-2 mb-3">
             <Wallet className="w-8 h-8 text-purple-600" />
             <h2 className="text-3xl font-bold text-gray-900">
@@ -310,7 +310,7 @@ export default function SolanaBindPage() {
             </h2>
           </div>
           <p className="text-gray-600">
-            {userInfo 
+            {userInfo
               ? `Connect your Phantom wallet to ${userInfo.name}'s account`
               : 'Connect your Phantom wallet to bind it to your account'
             }

@@ -3,16 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
-import { 
-  Coins, 
-  TrendingUp, 
-  Users, 
-  Trophy, 
-  Calendar, 
-  ArrowUpRight, 
-  ArrowDownRight, 
-  Wallet, 
-  RefreshCw, 
+import {
+  Coins,
+  TrendingUp,
+  Users,
+  Trophy,
+  Calendar,
+  ArrowUpRight,
+  ArrowDownRight,
+  Wallet,
+  RefreshCw,
   Clock,
   CheckCircle,
   Star,
@@ -24,10 +24,10 @@ import {
   Filter
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { BottomNavigation } from '@/components/BottomNavigation';
-import { UserDropdown } from '@/components/UserDropdown';
-import { TwitterSignInButton } from '@/components/TwitterSignInButton';
-import { XLogoMinimal } from '@/components/XLogo';
+import { BottomNavigation } from '../../components/BottomNavigation';
+import { UserDropdown } from '../../components/UserDropdown';
+import { TwitterSignInButton } from '../../components/TwitterSignInButton';
+import { XLogoMinimal } from '../../components/XLogo';
 
 interface Transaction {
   id: string;
@@ -78,7 +78,7 @@ export default function XogsPage() {
     try {
       setLoading(true);
       const response = await fetch(`/api/xogs/transactions?page=${page}&limit=20`);
-      
+
       if (response.ok) {
         const data = await response.json();
         setTransactionData(data.data);
@@ -306,11 +306,10 @@ export default function XogsPage() {
                 <button
                   key={filter.key}
                   onClick={() => setFilterType(filter.key)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                    filterType === filter.key
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${filterType === filter.key
                       ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
+                    }`}
                 >
                   <IconComponent className="w-4 h-4" />
                   {filter.label}
